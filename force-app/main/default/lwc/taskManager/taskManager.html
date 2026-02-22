@@ -1,0 +1,118 @@
+<template>
+  <lightning-card title="Task Manager" icon-name="standard:task">
+
+    <!-- Filter Bar -->
+    <div class="slds-m-around_medium">
+      <div class="slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+          <lightning-combobox
+            label="Filter by Status"
+            value={statusFilter}
+            options={statusOptions}
+            onchange={handleStatusFilterChange}>
+          </lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+          <lightning-combobox
+            label="Filter by Priority"
+            value={priorityFilter}
+            options={priorityOptions}
+            onchange={handlePriorityFilterChange}>
+          </lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-align-bottom">
+          <lightning-button
+            label="New Task"
+            variant="brand"
+            onclick={handleNewTask}>
+          </lightning-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task List -->
+    <div class="slds-m-around_medium">
+      <template if:true={hasNoTasks}>
+        <div class="slds-align_absolute-center slds-p-around_large">
+          <p class="slds-text-color_weak">No tasks found. Create one to get started.</p>
+        </div>
+      </template>
+
+      <template if:false={hasNoTasks}>
+        <lightning-datatable
+          key-field="Id"
+          data={tasks}
+          columns={columns}
+          onrowaction={handleRowAction}>
+        </lightning-datatable>
+      </template>
+    </div>
+
+    <!-- Modal -->
+    <template if:true={isModalOpen}>
+      <section role="dialog" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+          <header class="slds-modal__header">
+            <h2 class="slds-text-heading_medium">
+              {modalTitle}
+            </h2>
+          </header>
+          <div class="slds-modal__content slds-p-around_medium">
+            <lightning-input
+              label="Task Name"
+              name="Name"
+              value={selectedTask.Name}
+              onchange={handleFieldChange}
+              required>
+            </lightning-input>
+            <lightning-combobox
+              label="Status"
+              name="Status__c"
+              value={selectedTask.Status__c}
+              options={statusOptions}
+              onchange={handleFieldChange}
+              class="slds-m-top_small">
+            </lightning-combobox>
+            <lightning-combobox
+              label="Priority"
+              name="Priority__c"
+              value={selectedTask.Priority__c}
+              options={priorityOptions}
+              onchange={handleFieldChange}
+              class="slds-m-top_small">
+            </lightning-combobox>
+            <lightning-input
+              type="date"
+              label="Due Date"
+              name="Due_Date__c"
+              value={selectedTask.Due_Date__c}
+              onchange={handleFieldChange}
+              class="slds-m-top_small">
+            </lightning-input>
+            <lightning-textarea
+              label="Description"
+              name="Description__c"
+              value={selectedTask.Description__c}
+              onchange={handleFieldChange}
+              class="slds-m-top_small">
+            </lightning-textarea>
+          </div>
+          <footer class="slds-modal__footer">
+            <lightning-button
+              label="Cancel"
+              onclick={handleCloseModal}
+              class="slds-m-right_small">
+            </lightning-button>
+            <lightning-button
+              label="Save"
+              variant="brand"
+              onclick={handleSaveTask}>
+            </lightning-button>
+          </footer>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+  </lightning-card>
+</template>

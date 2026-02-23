@@ -61,6 +61,7 @@ export default class TaskManager extends LightningElement {
       { label: 'Status', fieldName: 'Status__c', type: 'text' },
       { label: 'Priority', fieldName: 'Priority__c', type: 'text' },
       { label: 'Due Date', fieldName: 'Due_Date__c', type: 'date' },
+      { label: 'Description', fieldName: 'Description__c', type: 'text', wrapText: true },
       {
         type: 'action',
         typeAttributes: {
